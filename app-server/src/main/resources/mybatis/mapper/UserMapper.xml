@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wiscom.bus.app.server.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.wiscom.bus.app.server.model.User" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="gender" property="gender" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Where_List">
+        <if test="username != null  and username != ''"> and usernaem = #{usernaem} </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        `id`,`username`,`password`,`name`,`tel`,`gender`
+    </sql>
+
+    <select id="findByUsername" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List" />
+        FROM `sys_user`
+        WHERE
+            `username`=#{username}
+    </select>
+
+
+    <insert id="insert" parameterType="com.wiscom.bus.app.server.model.User">
+        INSERT INTO `sys_user`(`username`,`password`,`name`,`tel`,`gender`) VALUE  (#{username}, #{password},#{name},#{tel},#{gender})
+    </insert>
+
+    <update id="update" parameterType="com.wiscom.bus.app.server.model.User" >
+        UPDATE  `sys_user` SET
+            <if test="username != null">`username` = #{username},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="tel != null">`tel` = #{tel},</if>
+            <if test="gender != null">`gender` = #{gender},</if>
+            id = #{id}
+        WHERE  id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long" >   DELETE FROM `sys_user` WHERE id =#{id} </delete>
+</mapper>
